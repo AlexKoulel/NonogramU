@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelSetScript : MonoBehaviour
@@ -12,7 +13,8 @@ public class LevelSetScript : MonoBehaviour
     private ButtonScript btnobj;
     [SerializeField] private List<GameObject> numbertexts;
     [SerializeField] private List<GameObject> cells;
-    [SerializeField] private GameObject nxtlvlbutton;
+    [SerializeField] private GameObject nxtlvlbutton,finishgamebutton;
+    [SerializeField] private List<GameObject> solutions;
     void Start()
     {
         btnobj = GameObject.Find("Canvas").GetComponent<ButtonScript>();
@@ -30,12 +32,25 @@ public class LevelSetScript : MonoBehaviour
 
     public void LevelComplete()
     {
-        nxtlvlbutton.SetActive(true);
-        currentlevel++;
+        solutions[currentlevel-1].SetActive(true);
+        StartCoroutine(FadeInSolution(solutions[currentlevel - 1]));
+        if(currentlevel < 10)
+        {
+            currentlevel++;
+            nxtlvlbutton.SetActive(true);
+        }
+        else
+        {
+            finishgamebutton.SetActive(true);
+        }
     }
 
     public void SetLevel()
     {
+        for(int i=0;i<solutions.Count;i++)
+        {
+            solutions[i].SetActive(false);
+        }
         btnobj.ResetBoard();
         nxtlvlbutton.SetActive(false);
         levelboard = jsonobj.GetLevelBoard(currentlevel);
@@ -75,5 +90,20 @@ public class LevelSetScript : MonoBehaviour
             numbertexts[k].GetComponent<TextMeshProUGUI>().text = rownumbers[k].ToString();
             numbertexts[k+5].GetComponent<TextMeshProUGUI>().text = columnnumbers[k].ToString();
         }
+    }
+
+    private IEnumerator FadeInSolution(GameObject currentobject)
+    {
+        Image currentimage = currentobject.GetComponent<Image>();
+        for(float i=0;i<=1 ; i += Time.deltaTime)
+        {
+            currentimage.color = new Color(1, 1, 1, i);
+            yield return null;
+        }
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
     }
 }
