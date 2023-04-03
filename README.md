@@ -5,9 +5,9 @@ A simple 5x5 Nonogram game made using Unity for Windows and Linux.
 ------------------------------------------------
 # Features
 
--10 levels 
--5x5 grid
--Windows & Linux 
+- 10 levels 
+- 5x5 grid
+- Windows & Linux 
 ------------------------------------------------
 # Screenshots
 
