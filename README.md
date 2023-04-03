@@ -7,7 +7,7 @@ A simple 5x5 Nonogram game made using Unity for Windows and Linux.
 - 10 levels 
 - 5x5 grid
 - Windows & Linux 
-------------------------------------------------
+
 # Screenshots
 
 ![1](https://github.com/AlexKoulel/NonogramU/blob/main/Picross/Assets/Images/Screenshots%26Logo/1.png)
