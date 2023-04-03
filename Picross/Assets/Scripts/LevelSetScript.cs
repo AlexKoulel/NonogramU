@@ -11,12 +11,15 @@ public class LevelSetScript : MonoBehaviour
     private int currentlevel = 0;
     private JSONReaderScript jsonobj;
     private ButtonScript btnobj;
+    AudioSource audiosource;
+    [SerializeField] private List<AudioClip> clips;
     [SerializeField] private List<GameObject> numbertexts;
     [SerializeField] private List<GameObject> cells;
-    [SerializeField] private GameObject nxtlvlbutton,finishgamebutton;
+    [SerializeField] private GameObject nxtlvlbutton,finishgamebutton,solutiontext;
     [SerializeField] private List<GameObject> solutions;
     void Start()
     {
+        audiosource = GameObject.Find("GameAudioSource").GetComponent<AudioSource>();
         btnobj = GameObject.Find("Canvas").GetComponent<ButtonScript>();
         jsonobj = this.gameObject.GetComponent<JSONReaderScript>();
         currentlevel = 1;
@@ -32,7 +35,10 @@ public class LevelSetScript : MonoBehaviour
 
     public void LevelComplete()
     {
+        audiosource.PlayOneShot(clips[0]);
         solutions[currentlevel-1].SetActive(true);
+        solutiontext.SetActive(true);
+        solutiontext.GetComponent<TextMeshProUGUI>().text = solutions[currentlevel - 1].name.ToString();
         StartCoroutine(FadeInSolution(solutions[currentlevel - 1]));
         if(currentlevel < 10)
         {
@@ -51,6 +57,7 @@ public class LevelSetScript : MonoBehaviour
         {
             solutions[i].SetActive(false);
         }
+        solutiontext.SetActive(false);
         btnobj.ResetBoard();
         nxtlvlbutton.SetActive(false);
         levelboard = jsonobj.GetLevelBoard(currentlevel);

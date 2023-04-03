@@ -8,11 +8,14 @@ using UnityEngine.UI;
 public class ButtonScript : MonoBehaviour
 {
     LevelSetScript lvlsetscript;
+    AudioSource audiosource;
+    [SerializeField] private List<AudioClip> clips;
     private int[,] board = { { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } };
     private int[,] finishedboard;
 
     private void Start()
     {
+        audiosource = GameObject.Find("GameAudioSource").GetComponent<AudioSource>();
         lvlsetscript = GameObject.Find("LevelObject").GetComponent<LevelSetScript>();
         //finishedboard = lvlsetscript.ReturnCurrentLevelBoard();
     }
@@ -25,11 +28,13 @@ public class ButtonScript : MonoBehaviour
         int col= (int)char.GetNumericValue(cellnumber[9]);
         if (board[row - 1, col - 1] == 0)
         {
+            audiosource.PlayOneShot(clips[0]);
             cell.GetComponent<Image>().color = Color.black;
             board[row - 1, col - 1] = 1;
         }
         else if (board[row -1 ,col - 1] == 1)
         {
+            audiosource.PlayOneShot(clips[1]);
             cell.GetComponent<Image>().color = Color.white;
             board[row - 1, col - 1] = 0;
         }
